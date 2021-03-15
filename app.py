@@ -40,7 +40,7 @@ def singin():
         return redirect(url_for('error'))
 
 
-#會員路由判斷
+#錯誤導向頁
 @app.route("/error")
 def error():
         return render_template("error.html", pageTitle = pageTitle3)

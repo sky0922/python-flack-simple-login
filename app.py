@@ -25,8 +25,9 @@ def singin():
     #收到 POST 資料時，先將 session 清空
     if request.method == "POST":
         session.pop("loginUsername", None)
+        session["loginState"] = False
 
-    #將 POST 資料存入變數
+    #將 POST 資料存入變數，GET 資料寫法 變數 = request.args.get("參數名稱")
     username = request.form["username"]
     pwd = request.form["password"]
 
@@ -34,9 +35,11 @@ def singin():
     if (username == "test") & (pwd == "test"):
         #帳號密碼相符，session 寫入資料，並導向 member 頁
         session["loginUsername"] = username
+        session["loginState"] = True
         return redirect(url_for('member'))
     else:
-        session.pop("loginUsername", None)
+        session["loginUsername"] = username
+        session["loginState"] = False
         return redirect(url_for('error'))
 
 
@@ -45,11 +48,11 @@ def singin():
 def error():
         return render_template("error.html", pageTitle = pageTitle3)
 
-#會員頁，有登入狀態才能看到資訊，沒登入導回首頁
+##會員頁，有登入狀態才能看到資訊，沒登入導回首頁
 @app.route("/member")
 def member():
-    #判斷 session 有沒有存資料
-    if session.get("loginUsername") != None:
+    #判斷 session loginState 是否為真
+    if session["loginState"] == True:
         return render_template("member.html", pageTitle = pageTitle2)
     else:
         return redirect(url_for('index'))
@@ -59,6 +62,7 @@ def member():
 def signout():
     #將 session 記錄清空
     session.pop("loginUsername", None)
+    session["loginState"] = False
     return redirect(url_for('index'))
 
 

@@ -45,10 +45,10 @@ def singin():
 def error():
         return render_template("error.html", pageTitle = pageTitle3)
 
-#會員路由判斷
+#會員頁，有登入狀態才能看到資訊，沒登入導回首頁
 @app.route("/member")
 def member():
-    #判斷 session 有沒有存資料，有資料等於
+    #判斷 session 有沒有存資料
     if session.get("loginUsername") != None:
         return render_template("member.html", pageTitle = pageTitle2)
     else:

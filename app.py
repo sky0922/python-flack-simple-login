@@ -58,11 +58,8 @@ def member():
 @app.route("/signout")
 def signout():
     #將 session 記錄清空
-    #print(session)
     session.pop("loginUsername", None)
-    #print(session)
     return redirect(url_for('index'))
-
 
 
 #設定 host & port
